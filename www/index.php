@@ -15,17 +15,17 @@ foreach ($arRes as $Res) {
     $id_good = (int)trim($Res[0]);
     $idCustomer = (int)trim($Res[1]);
     $comment = trim($Res[2]);
-    $query = "INSERT INTO orders (comment) VALUES ('$comment')";
+    $query = "INSERT INTO orders (customerId, goods_id, comment) VALUES ($id_good, $idCustomer, '$comment')";
     $result = mysqli_query($conn, $query);
 }
 
 
 $re = mysqli_query($conn, "SELECT * FROM orders");
-
-if ($result) {
+// echo $re;
+if ($re) {
     // Обработка результата запроса
     while ($row = mysqli_fetch_assoc($re)) {
-        echo $row['comment'] . ' '; // Выводим значение поля 'name' из результата
+        echo $row['comment'] . ' ' . $row['customerId'] . ' ' . $row['goods_id'] . '<br />'; // Выводим значение поля 'name' из результата
     }
 } else {
     echo "Ошибка запроса: " . mysqli_error($conn);
