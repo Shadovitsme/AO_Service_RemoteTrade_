@@ -4,14 +4,6 @@ namespace data;
 
 class dataClass
 {
-    function insertIntoOrders($arFromDocument)
-    {
-        // Подключение к базе данных
-        $connection = mysqli_connect("localhost:3307", "root", "123456", "try");
-
-        mysqli_close($connection); // Закрываем соединение с базой данных
-    }
-
     function setOrdersData($arFromDocument)
     {
         // Подключение к базе данных
