@@ -57,7 +57,7 @@ class dataClass
 
         $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
 
-        $query = 'SELECT id FROM orders';
+        $query = 'SELECT id FROM merchendise';
         $result = mysqli_query($connection, $query);
         foreach ($result as $re) {
             $arRes[] = (int)trim($re['id']);

@@ -5,13 +5,14 @@ declare(strict_types=1);
 require_once('../../dataClass.php');
 
 use data\dataClass;
-//TODO сделать кнопку назад
+
+require_once('backButton.php');
 
 function getDataFromFile() // получает данные из файла и записывает их в массив массивов
 {
     //todo вынести в отделюную функцию в отдельном файле
-    $arRow = (str_getcsv(file_get_contents('../../somethingTest/doc_for_test.csv'), ';'));
-
+    // $arRow = (str_getcsv(file_get_contents('../../somethingTest/doc_for_test.csv'), ';'));
+    $arRow = (str_getcsv(file_get_contents($_FILES['data']['tmp_name']), ';'));
     for ($i = 0; $i < count($arRow) - 1; $i += 3) {
         $arRes[] = [$arRow[$i], $arRow[$i + 1], $arRow[$i + 2]];
     }
