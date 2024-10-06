@@ -10,11 +10,9 @@ require_once('backButton.php');
 
 function getDataFromFile() // получает данные из файла и записывает их в массив массивов
 {
-    //todo вынести в отделюную функцию в отдельном файле
-    // $arRow = (str_getcsv(file_get_contents('../../somethingTest/doc_for_test.csv'), ';'));
     $arRow = (str_getcsv(file_get_contents($_FILES['data']['tmp_name']), ';'));
-    for ($i = 0; $i < count($arRow) - 1; $i += 3) {
-        $arRes[] = [$arRow[$i], $arRow[$i + 1], $arRow[$i + 2]];
+    for ($i = 0; $i < count($arRow) - 1; $i += 4) {
+        $arRes[] = [$arRow[$i], $arRow[$i + 1], $arRow[$i + 2], $arRow[$i + 3]];
     }
     unset($arRes[0]); //удаление первой строки в которой просто описание столбцов
     return $arRes;
@@ -28,13 +26,13 @@ $query = "SELECT * FROM orders";
 $result = mysqli_query($connection, $query);
 echo '<h3> валидные данные данные </h3>';
 foreach ($result as $re) {
-    echo $re['id'] . ' ' . $re['customerId'] . ' ' . $re['goods_id'] . ' ' . $re['comment'] . '<br />';
+    echo $re['id'] . ' ' . $re['customerId'] . ' ' . $re['goods_id'] . ' ' . $re['comment'] . ' ' . $re['stat'] . '<br />';
 }
 echo '<hr>';
 echo '<h3> невалидные данные </h3>';
 $query = "SELECT * FROM nonValidOrdersData";
 $result = mysqli_query($connection, $query);
 foreach ($result as $re) {
-    echo $re['id'] . ' ' . $re['customerId'] . ' ' . $re['goods_id'] . ' ' . $re['comment'] . '<br />';
+    echo $re['id'] . ' ' . $re['customerId'] . ' ' . $re['goods_id'] . ' ' . $re['comment'] .  ' ' . $re['stat'] . '<br />';
 }
 mysqli_close($connection); // Закрываем соединение с базой данных

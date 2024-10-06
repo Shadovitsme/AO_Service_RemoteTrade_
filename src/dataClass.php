@@ -10,6 +10,14 @@ class dataClass
         $arCustomerId = $this->getClientsData();
         $arGoodsId = $this->getMerchendise();
         foreach ($arFromDocument as $arElem) {
+            if ($arElem[3] === 'new') {
+                $arElem[3] = 'true';
+            } elseif (!empty($arElem[3])) {
+                $arElem[3] = 'false';
+            } else {
+                $arElem[3] = 'NULL';
+            }
+
             if (in_array((int)trim($arElem[0]), $arCustomerId) && in_array((int)trim($arElem[1]), $arGoodsId)) {
                 $arValidCustomers[] = $arElem;
             } else {
@@ -32,7 +40,8 @@ class dataClass
             $id_good = (int)trim($Res[0]);
             $idCustomer = (int)trim($Res[1]);
             $comment = trim($Res[2]);
-            $query = "INSERT INTO $table (goods_id, customerId, comment) VALUES ($id_good, $idCustomer, '$comment')";
+            $stat = $Res[3];
+            $query = "INSERT INTO $table (goods_id, customerId, stat, comment) VALUES ($id_good, $idCustomer, $stat,'$comment')";
             $result = mysqli_query($connection, $query);
         }
         mysqli_close($connection); // Закрываем соединение с базой данных
