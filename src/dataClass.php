@@ -7,7 +7,7 @@ class dataClass
     function setOrdersData($arFromDocument)
     {
         // Подключение к базе данных
-        $connection = mysqli_connect("localhost:3307", "root", "123456", "try");
+        $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
         foreach ($arFromDocument as $Res) {
             $id_good = (int)trim($Res[0]);
             $idCustomer = (int)trim($Res[1]);
@@ -22,7 +22,7 @@ class dataClass
     function getClientsData()
     {
         // Подключение к базе данных
-        $connection = mysqli_connect("localhost:3307", "root", "123456", "try");
+        $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
         //todo реализовать
         mysqli_close($connection); // Закрываем соединение с базой данных
     }
@@ -30,7 +30,7 @@ class dataClass
     function getMerchendise()
     {
         // Подключение к базе данных
-        $connection = mysqli_connect("localhost:3307", "root", "123456", "try");
+        $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
         //todo реализовать
         mysqli_close($connection); // Закрываем соединение с базой данных
     }

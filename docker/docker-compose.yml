@@ -1,0 +1,24 @@
+services:
+    php:
+        build:
+            context: '.'
+            dockerfile: Dockerfile
+        image: 'students-8.3/app'
+        environment:
+            - INDEX_DIR=/var/www/html/www
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - 80:80
+        volumes:
+            - '../src:/var/www/html'
+    mysql:
+        image:
+            mysql:latest
+        environment:
+            - MYSQL_ROOT_PASSWORD=123456
+            - MYSQL_DATABASE=doczilla
+        volumes:
+            - './try.session.sql:/docker-entrypoint-initdb.d/init.sql'
+        ports:
+            - 3308:3306

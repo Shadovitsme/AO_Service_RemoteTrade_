@@ -15,3 +15,7 @@ CREATE TABLE orders(
     comment char(100),
     stat boolean
 );
+INSERT INTO clients (name) VALUES ('vassa');
+INSERT INTO clients (name) VALUES ('nana');
+INSERT INTO merchendise (goods_name) VALUES ('rar');
+INSERT INTO merchendise (goods_name) VALUES ('pruska.rar');
