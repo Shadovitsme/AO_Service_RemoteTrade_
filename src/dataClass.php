@@ -1,10 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace data;
+
+require_once('db.php');
+
+use database\dbFunctions;
+
 
 class dataClass
 {
-    function checkValidData($arFromDocument)
+    function checkValidData($arFromDocument): void
     {
         //проверка на валидность и заполнение валидного и не валидного массива
         $arCustomerId = $this->getClientsData();
@@ -32,47 +39,34 @@ class dataClass
         }
     }
 
-    function setData($arValid, $table)
+    function setData($arValid, $table): void
     {
-        // Подключение к базе данных
-        $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
-        foreach ($arValid as $Res) {
-            $id_good = (int)trim($Res[0]);
-            $idCustomer = (int)trim($Res[1]);
-            $comment = trim($Res[2]);
-            $stat = $Res[3];
+        foreach ($arValid as $validItem) {
+            $id_good = (int)trim($validItem[0]);
+            $idCustomer = (int)trim($validItem[1]);
+            $comment = trim($validItem[2]);
+            $stat = $validItem[3];
             $query = "INSERT INTO $table (goods_id, customerId, stat, comment) VALUES ($id_good, $idCustomer, $stat,'$comment')";
-            $result = mysqli_query($connection, $query);
+            dbFunctions::db($query);
         }
-        mysqli_close($connection); // Закрываем соединение с базой данных
     }
-
-
     function getClientsData(): array
     {
-        // Подключение к базе данных
-        $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
         $query = 'SELECT id FROM clients';
-        $result = mysqli_query($connection, $query);
+        $result = dbFunctions::db($query);
         foreach ($result as $re) {
             $arRes[] = (int)trim($re['id']);
         }
-        mysqli_close($connection); // Закрываем соединение с базой данных
         return $arRes;
     }
 
     function getMerchendise(): array
     {
-
-        $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
-
         $query = 'SELECT id FROM merchendise';
-        $result = mysqli_query($connection, $query);
+        $result = dbFunctions::db($query);
         foreach ($result as $re) {
             $arRes[] = (int)trim($re['id']);
         }
-        mysqli_close($connection); // Закрываем соединение с базой данных
-
         return $arRes;
     }
 }

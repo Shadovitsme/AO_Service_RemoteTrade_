@@ -1,8 +1,11 @@
 <?php
+
+declare(strict_types=1);
 require_once('backButton.php');
+require_once('db.php');
 
+use database\dbFunctions;
 
-$connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
 $query = <<<SQL
 SELECT clients.name, COUNT(orders.customerId) AS count, orders.customerId
 FROM orders
@@ -13,7 +16,7 @@ ORDER BY count DESC
 LIMIT 5;
 SQL;
 
-$result = mysqli_query($connection, $query);
+$result = dbFunctions::db($query);
 
 echo '<h3> Наиболее выгодные пользователи </h3>';
 foreach ($result as $re) {

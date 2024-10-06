@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 require_once('../../dataClass.php');
+require_once('../../db.php');
 
+use database\dbFunctions;
 use data\dataClass;
 
 require_once('backButton.php');
 
-function getDataFromFile() // получает данные из файла и записывает их в массив массивов
+function getDataFromFile(): array // получает данные из файла и записывает их в массив массивов
 {
     $arRow = (str_getcsv(file_get_contents($_FILES['data']['tmp_name']), ';'));
     for ($i = 0; $i < count($arRow) - 1; $i += 4) {
@@ -21,9 +23,8 @@ function getDataFromFile() // получает данные из файла и �
 $dataObject = new dataClass;
 $dataObject->checkValidData(getDataFromFile());
 
-$connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
 $query = "SELECT * FROM orders";
-$result = mysqli_query($connection, $query);
+$result = dbFunctions::db($query);
 echo '<h3> валидные данные данные </h3>';
 foreach ($result as $re) {
     echo $re['id'] . ' ' . $re['customerId'] . ' ' . $re['goods_id'] . ' ' . $re['comment'] . ' ' . $re['stat'] . '<br />';
@@ -31,8 +32,7 @@ foreach ($result as $re) {
 echo '<hr>';
 echo '<h3> невалидные данные </h3>';
 $query = "SELECT * FROM nonValidOrdersData";
-$result = mysqli_query($connection, $query);
+$result = dbFunctions::db($query);
 foreach ($result as $re) {
     echo $re['id'] . ' ' . $re['customerId'] . ' ' . $re['goods_id'] . ' ' . $re['comment'] .  ' ' . $re['stat'] . '<br />';
 }
-mysqli_close($connection); // Закрываем соединение с базой данных
