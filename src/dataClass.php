@@ -4,34 +4,66 @@ namespace data;
 
 class dataClass
 {
-    function setOrdersData($arFromDocument)
+    function checkValidData($arFromDocument)
+    {
+        //проверка на валидность и заполнение валидного и не валидного массива
+        $arCustomerId = $this->getClientsData();
+        $arGoodsId = $this->getMerchendise();
+        foreach ($arFromDocument as $arElem) {
+            if (in_array((int)trim($arElem[0]), $arCustomerId) && in_array((int)trim($arElem[1]), $arGoodsId)) {
+                $arValidCustomers[] = $arElem;
+            } else {
+                $arNotValid[] = $arElem;
+            }
+
+            //заполнение заказов
+            $this->setData($arValidCustomers, 'orders');
+
+            //заполнение неверных массивов
+            $this->setData($arNotValid, 'nonValidOrdersData');
+        }
+    }
+
+    function setData($arValid, $table)
     {
         // Подключение к базе данных
         $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
-        foreach ($arFromDocument as $Res) {
+        foreach ($arValid as $Res) {
             $id_good = (int)trim($Res[0]);
             $idCustomer = (int)trim($Res[1]);
             $comment = trim($Res[2]);
-            $query = "INSERT INTO orders (customerId, goods_id, comment) VALUES ($id_good, $idCustomer, '$comment')";
+            $query = "INSERT INTO $table (goods_id, customerId, comment) VALUES ($id_good, $idCustomer, '$comment')";
             $result = mysqli_query($connection, $query);
         }
         mysqli_close($connection); // Закрываем соединение с базой данных
-        return $result;
     }
 
-    function getClientsData()
+
+    function getClientsData(): array
     {
         // Подключение к базе данных
         $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
-        //todo реализовать
+        $query = 'SELECT id FROM clients';
+        $result = mysqli_query($connection, $query);
+        foreach ($result as $re) {
+            $arRes[] = (int)trim($re['id']);
+        }
         mysqli_close($connection); // Закрываем соединение с базой данных
+        return $arRes;
     }
 
-    function getMerchendise()
+    function getMerchendise(): array
     {
-        // Подключение к базе данных
+
         $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
-        //todo реализовать
+
+        $query = 'SELECT id FROM orders';
+        $result = mysqli_query($connection, $query);
+        foreach ($result as $re) {
+            $arRes[] = (int)trim($re['id']);
+        }
         mysqli_close($connection); // Закрываем соединение с базой данных
+
+        return $arRes;
     }
 }

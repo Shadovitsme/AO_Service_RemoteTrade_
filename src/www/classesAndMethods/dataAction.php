@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once('../../dataClass.php');
 
 use data\dataClass;
+//TODO сделать кнопку назад
 
 function getDataFromFile() // получает данные из файла и записывает их в массив массивов
 {
@@ -19,10 +20,18 @@ function getDataFromFile() // получает данные из файла и �
 }
 
 $dataObject = new dataClass;
-$dataObject->setOrdersData(getDataFromFile());
+$dataObject->checkValidData(getDataFromFile());
 
 $connection = mysqli_connect("docker-mysql-1:3306", "root", "123456", "doczilla");
 $query = "SELECT * FROM orders";
+$result = mysqli_query($connection, $query);
+echo '<h3> валидные данные данные </h3>';
+foreach ($result as $re) {
+    echo $re['id'] . ' ' . $re['customerId'] . ' ' . $re['goods_id'] . ' ' . $re['comment'] . '<br />';
+}
+echo '<hr>';
+echo '<h3> невалидные данные </h3>';
+$query = "SELECT * FROM nonValidOrdersData";
 $result = mysqli_query($connection, $query);
 foreach ($result as $re) {
     echo $re['id'] . ' ' . $re['customerId'] . ' ' . $re['goods_id'] . ' ' . $re['comment'] . '<br />';

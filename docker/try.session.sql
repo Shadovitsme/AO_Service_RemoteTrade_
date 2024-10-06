@@ -15,6 +15,14 @@ CREATE TABLE orders(
     comment char(100),
     stat boolean
 );
+CREATE TABLE nonValidOrdersData(
+    id int primary key AUTO_INCREMENT not null,
+    customerId int,
+    goods_id int,
+    comment char(100),
+    stat boolean
+);
+
 INSERT INTO clients (name) VALUES ('vassa');
 INSERT INTO clients (name) VALUES ('nana');
 INSERT INTO merchendise (goods_name) VALUES ('rar');
